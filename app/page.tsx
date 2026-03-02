@@ -9,18 +9,19 @@ export default function Home() {
         <section className="mb-6">
           <div className="text-sm text-gray-600 leading-relaxed mb-6 space-y-4">
             <p>
-              I&apos;m Filippo Teodoro. I work in strategy at Sky, in the CEO/CTO office. Before
-              that, McKinsey and Bain — mostly private equity. Before that, Amazon and a machine
-              learning hedge fund in London.
+              Hello! I&apos;m Filippo Teodoro. I currently live in Milan and work in Strategy at
+              Sky, in the CEO/CTO offices. Before, I worked in consulting for McKinsey and Bain —
+              mostly in private equity. Before, I worked for Amazon and a machine learning hedge
+              fund in London.
             </p>
             <p>
-              I grew up in a small town in Lazio and used the internet to make it feel much bigger.
-              I studied in Buenos Aires, Barcelona and Paris, and have lived across Europe, South
-              America and Asia. Don&apos;t plan on staying still.
+              I grew up in a small town near Rome called Viterbo and I used the internet to make
+              it feel much bigger. I studied in Buenos Aires, Barcelona and Paris, and have lived
+              across Europe, South America and Asia.
             </p>
             <p>
-              I still build things on the side. Outside of work: travel, markets, geopolitics,
-              startups, music, fashion, sports&hellip;
+              I build things on the side. Outside of work I love travel, sports, tech, finance,
+              geopolitics, startups, music, fashion&hellip;
             </p>
           </div>
           <nav className="flex flex-wrap gap-x-6 gap-y-2">
