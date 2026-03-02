@@ -10,23 +10,23 @@ export default function Home() {
           <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6 space-y-4">
             <p>
               Hello! I&apos;m Filippo Teodoro. I live in Milan and work in Strategy at Sky. On the
-              side I love to build things online. I built my corporate skills at McKinsey and Bain
-              — mostly in private equity — where I learned what high standards mean, but also that
+              side I love to build things online. I built my corporate skills at McKinsey and Bain,
+              mostly in private equity. There I learned what high standards mean, but also that
               slides and excels only take you so far. Before that, I worked at Amazon and a machine
               learning hedge fund in London.
             </p>
             <p>
               I grew up in a small town near Rome called Viterbo and used the internet to make it
-              feel much bigger — building businesses, learning about the world and playing a lot of
+              feel much bigger by building businesses, learning about the world and playing a lot of
               video games. At the first opportunity I had, I flew as far from home as I could: I
               spent my first year of university in Buenos Aires, where I cemented my confidence and
-              realised that if I was willing to give it a chance, the world was there to be
-              discovered. Then I also studied in Barcelona and Paris, and have lived across Europe,
-              South America and Asia.
+              realised that if I was willing to give it a chance, the world was there to teach me
+              something I didn&apos;t know about myself. Then I also studied in Barcelona and Paris,
+              and have lived across Europe, South America and Asia.
             </p>
             <p>
-              Outside of work I love travel, sports, tech, finance, geopolitics, startups, music,
-              fashion&hellip;
+              Outside of work I love travel, sports, tech, finance, design, geopolitics, startups,
+              music, fashion&hellip;
             </p>
           </div>
           <nav className="flex flex-wrap gap-x-6 gap-y-2">
