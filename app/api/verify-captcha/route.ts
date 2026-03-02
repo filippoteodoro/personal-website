@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   const data = await res.json() as { success: boolean; score: number; 'error-codes'?: string[] }
 
   if (!data.success || data.score < 0.5) {
-    return NextResponse.json({ success: false, detail: data }, { status: 400 })
+    return NextResponse.json({ success: false }, { status: 400 })
   }
 
   return NextResponse.json({ success: true })

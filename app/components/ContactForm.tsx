@@ -14,19 +14,14 @@ function Form() {
     setStatus('loading')
 
     try {
-      // Step 1: verify reCAPTCHA server-side
       const token = await executeRecaptcha('contact_form')
       const verify = await fetch('/api/verify-captcha', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
       })
-      if (!verify.ok) {
-        setStatus('error')
-        return
-      }
+      if (!verify.ok) { setStatus('error'); return }
 
-      // Step 2: submit to Web3Forms directly from browser
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -77,7 +72,10 @@ function Form() {
       </div>
 
       {status === 'error' && (
-        <p className="text-xs text-red-500">Something went wrong. Please try again.</p>
+        <p className="text-xs text-red-500">
+          Something went wrong — please try again or email me directly at{' '}
+          <a href="mailto:info@filippoteodoro.com" className="underline">info@filippoteodoro.com</a>.
+        </p>
       )}
 
       <button
