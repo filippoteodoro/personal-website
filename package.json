@@ -11,8 +11,7 @@
     "next": "^15",
     "react": "^19",
     "react-dom": "^19",
-    "react-google-recaptcha-v3": "^1",
-    "resend": "^4"
+    "react-google-recaptcha-v3": "^1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

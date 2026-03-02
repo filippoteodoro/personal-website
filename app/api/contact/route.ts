@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Resend } from 'resend'
 
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
-  const resend = new Resend(process.env.RESEND_API_KEY)
   const { name, email, message, token } = await req.json()
 
   if (!name || !email || !message || !token) {
@@ -27,17 +25,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'reCAPTCHA check failed' }, { status: 400 })
   }
 
-  // Send email via Resend
-  const { error } = await resend.emails.send({
-    from: 'contact@filippoteodoro.com',
-    to: process.env.CONTACT_EMAIL_TO!,
-    replyTo: email,
-    subject: `New message from ${name}`,
-    text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+  // Forward to Web3Forms
+  const res = await fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      access_key: process.env.WEB3FORMS_ACCESS_KEY,
+      name,
+      email,
+      message,
+      subject: `New message from ${name}`,
+    }),
   })
 
-  if (error) {
-    return NextResponse.json({ error: 'Failed to send email' }, { status: 500 })
+  if (!res.ok) {
+    return NextResponse.json({ error: 'Failed to send message' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })
