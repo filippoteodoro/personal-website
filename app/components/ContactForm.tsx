@@ -6,30 +6,26 @@ import { useState, FormEvent, useCallback } from 'react'
 function Form() {
   const { executeRecaptcha } = useGoogleReCaptcha()
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [errorMsg, setErrorMsg] = useState('')
   const [fields, setFields] = useState({ email: '', message: '' })
 
   const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!executeRecaptcha) return
-
     setStatus('loading')
     try {
-      const token = await executeRecaptcha('contact_form')
-      const res = await fetch('/api/contact', {
+      const token = executeRecaptcha ? await executeRecaptcha('contact_form') : ''
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...fields, token }),
+        body: JSON.stringify({
+          access_key: 'ba385ecc-fc29-4812-8db7-2a7fe9607b2d',
+          ...fields,
+          subject: `New message from ${fields.email}`,
+          'g-recaptcha-response': token,
+        }),
       })
-      if (res.ok) {
-        setStatus('success')
-      } else {
-        const data = await res.json()
-        setErrorMsg(data.error ?? 'Unknown error')
-        setStatus('error')
-      }
-    } catch (err) {
-      setErrorMsg(String(err))
+      const data = await res.json()
+      setStatus(data.success ? 'success' : 'error')
+    } catch {
       setStatus('error')
     }
   }, [executeRecaptcha, fields])
@@ -68,7 +64,7 @@ function Form() {
       </div>
 
       {status === 'error' && (
-        <p className="text-xs text-red-500">{errorMsg}</p>
+        <p className="text-xs text-red-500">Something went wrong. Please try again.</p>
       )}
 
       <button
