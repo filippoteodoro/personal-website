@@ -1,0 +1,106 @@
+'use client'
+
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { useState, FormEvent, useCallback } from 'react'
+
+function Form() {
+  const { executeRecaptcha } = useGoogleReCaptcha()
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [fields, setFields] = useState({ name: '', email: '', message: '' })
+
+  const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!executeRecaptcha) return
+
+    setStatus('loading')
+    try {
+      const token = await executeRecaptcha('contact_form')
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...fields, token }),
+      })
+      setStatus(res.ok ? 'success' : 'error')
+    } catch {
+      setStatus('error')
+    }
+  }, [executeRecaptcha, fields])
+
+  if (status === 'success') {
+    return <p className="text-sm text-gray-500">Thanks — I&apos;ll get back to you soon.</p>
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-5">
+
+      <div>
+        <label htmlFor="name" className="block text-xs text-gray-400 mb-1.5">Name</label>
+        <input
+          id="name"
+          type="text"
+          required
+          value={fields.name}
+          onChange={e => setFields(f => ({ ...f, name: e.target.value }))}
+          className="w-full border border-gray-200 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 transition"
+          placeholder="Your name"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="email" className="block text-xs text-gray-400 mb-1.5">Email</label>
+        <input
+          id="email"
+          type="email"
+          required
+          value={fields.email}
+          onChange={e => setFields(f => ({ ...f, email: e.target.value }))}
+          className="w-full border border-gray-200 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 transition"
+          placeholder="you@example.com"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="message" className="block text-xs text-gray-400 mb-1.5">Message</label>
+        <textarea
+          id="message"
+          required
+          rows={5}
+          value={fields.message}
+          onChange={e => setFields(f => ({ ...f, message: e.target.value }))}
+          className="w-full border border-gray-200 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 transition resize-none"
+          placeholder="What's on your mind?"
+        />
+      </div>
+
+      {status === 'error' && (
+        <p className="text-xs text-red-500">Something went wrong. Please try again.</p>
+      )}
+
+      <div className="flex items-center justify-between gap-4">
+        <button
+          type="submit"
+          disabled={status === 'loading'}
+          className="bg-gray-900 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-gray-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {status === 'loading' ? 'Sending…' : 'Send message'}
+        </button>
+        <p className="text-xs text-gray-300 leading-tight text-right">
+          Protected by reCAPTCHA.{' '}
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline">Privacy</a>
+          {' & '}
+          <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">Terms</a>
+          {' apply.'}
+        </p>
+      </div>
+
+    </form>
+  )
+}
+
+export default function ContactForm() {
+  return (
+    <GoogleReCaptchaProvider reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}>
+      <Form />
+    </GoogleReCaptchaProvider>
+  )
+}
