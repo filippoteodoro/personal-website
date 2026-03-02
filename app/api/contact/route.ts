@@ -19,10 +19,10 @@ export async function POST(req: NextRequest) {
     }),
   })
 
-  const { success, score } = await verifyRes.json() as { success: boolean; score: number }
+  const recaptchaData = await verifyRes.json() as { success: boolean; score: number; 'error-codes'?: string[] }
 
-  if (!success || score < 0.5) {
-    return NextResponse.json({ error: 'reCAPTCHA check failed' }, { status: 400 })
+  if (!recaptchaData.success || recaptchaData.score < 0.5) {
+    return NextResponse.json({ error: `reCAPTCHA failed: ${JSON.stringify(recaptchaData)}` }, { status: 400 })
   }
 
   // Forward to Web3Forms

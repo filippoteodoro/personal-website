@@ -6,6 +6,7 @@ import { useState, FormEvent, useCallback } from 'react'
 function Form() {
   const { executeRecaptcha } = useGoogleReCaptcha()
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [errorMsg, setErrorMsg] = useState('')
   const [fields, setFields] = useState({ email: '', message: '' })
 
   const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
@@ -20,8 +21,15 @@ function Form() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...fields, token }),
       })
-      setStatus(res.ok ? 'success' : 'error')
-    } catch {
+      if (res.ok) {
+        setStatus('success')
+      } else {
+        const data = await res.json()
+        setErrorMsg(data.error ?? 'Unknown error')
+        setStatus('error')
+      }
+    } catch (err) {
+      setErrorMsg(String(err))
       setStatus('error')
     }
   }, [executeRecaptcha, fields])
@@ -60,7 +68,7 @@ function Form() {
       </div>
 
       {status === 'error' && (
-        <p className="text-xs text-red-500">Something went wrong. Please try again.</p>
+        <p className="text-xs text-red-500">{errorMsg}</p>
       )}
 
       <button
