@@ -9,8 +9,9 @@ export default function Home() {
         <section className="mb-10">
           <div className="text-sm text-gray-600 leading-relaxed mb-8 space-y-4">
             <p>
-              I work in strategy at Sky, in the CEO/CTO office. Before that, McKinsey and Bain —
-              mostly private equity. Before that, Amazon and a machine learning hedge fund in London.
+              I&apos;m Filippo Teodoro. I work in strategy at Sky, in the CEO/CTO office. Before
+              that, McKinsey and Bain — mostly private equity. Before that, Amazon and a machine
+              learning hedge fund in London.
             </p>
             <p>
               I grew up in a small town in Lazio and used the internet to make it feel much bigger.
