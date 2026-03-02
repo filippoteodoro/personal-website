@@ -1,15 +1,32 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { useState, FormEvent, useCallback } from 'react'
 
-export default function ContactForm() {
+function Form() {
+  const { executeRecaptcha } = useGoogleReCaptcha()
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [fields, setFields] = useState({ email: '', message: '' })
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (!executeRecaptcha) return
     setStatus('loading')
+
     try {
+      // Step 1: verify reCAPTCHA server-side
+      const token = await executeRecaptcha('contact_form')
+      const verify = await fetch('/api/verify-captcha', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      })
+      if (!verify.ok) {
+        setStatus('error')
+        return
+      }
+
+      // Step 2: submit to Web3Forms directly from browser
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -24,7 +41,7 @@ export default function ContactForm() {
     } catch {
       setStatus('error')
     }
-  }
+  }, [executeRecaptcha, fields])
 
   if (status === 'success') {
     return <p className="text-sm text-gray-500">Thanks — I&apos;ll get back to you soon.</p>
@@ -72,5 +89,13 @@ export default function ContactForm() {
       </button>
 
     </form>
+  )
+}
+
+export default function ContactForm() {
+  return (
+    <GoogleReCaptchaProvider reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}>
+      <Form />
+    </GoogleReCaptchaProvider>
   )
 }
