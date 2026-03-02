@@ -1,30 +1,29 @@
 'use client'
 
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
-import { useState, FormEvent, useCallback } from 'react'
+import { useState, FormEvent } from 'react'
 
-function Form() {
-  const { executeRecaptcha } = useGoogleReCaptcha()
+export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [fields, setFields] = useState({ email: '', message: '' })
 
-  const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!executeRecaptcha) return
-
     setStatus('loading')
     try {
-      const token = await executeRecaptcha('contact_form')
-      const res = await fetch('/api/contact', {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...fields, token }),
+        body: JSON.stringify({
+          access_key: 'ba385ecc-fc29-4812-8db7-2a7fe9607b2d',
+          ...fields,
+          subject: `New message from ${fields.email}`,
+        }),
       })
       setStatus(res.ok ? 'success' : 'error')
     } catch {
       setStatus('error')
     }
-  }, [executeRecaptcha, fields])
+  }
 
   if (status === 'success') {
     return <p className="text-sm text-gray-500">Thanks — I&apos;ll get back to you soon.</p>
@@ -63,31 +62,14 @@ function Form() {
         <p className="text-xs text-red-500">Something went wrong. Please try again.</p>
       )}
 
-      <div className="flex items-center justify-between gap-4">
-        <button
-          type="submit"
-          disabled={status === 'loading'}
-          className="bg-gray-900 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-gray-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {status === 'loading' ? 'Sending…' : 'Send message'}
-        </button>
-        <p className="text-xs text-gray-300 leading-tight text-right">
-          Protected by reCAPTCHA.{' '}
-          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline">Privacy</a>
-          {' & '}
-          <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">Terms</a>
-          {' apply.'}
-        </p>
-      </div>
+      <button
+        type="submit"
+        disabled={status === 'loading'}
+        className="bg-gray-900 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-gray-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {status === 'loading' ? 'Sending…' : 'Send message'}
+      </button>
 
     </form>
-  )
-}
-
-export default function ContactForm() {
-  return (
-    <GoogleReCaptchaProvider reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}>
-      <Form />
-    </GoogleReCaptchaProvider>
   )
 }
