@@ -21,8 +21,10 @@ export async function POST(req: NextRequest) {
     }),
   })
 
-  if (!res.ok) {
-    return NextResponse.json({ error: 'Failed to send message' }, { status: 500 })
+  const data = await res.json()
+
+  if (!res.ok || !data.success) {
+    return NextResponse.json({ error: `Web3Forms error: ${JSON.stringify(data)}` }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })
