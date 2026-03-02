@@ -9,22 +9,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
   }
 
-  // Verify reCAPTCHA v3 token
-  const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      secret: process.env.RECAPTCHA_SECRET_KEY!,
-      response: token,
-    }),
-  })
-
-  const recaptchaData = await verifyRes.json() as { success: boolean; score: number; 'error-codes'?: string[] }
-
-  if (!recaptchaData.success || recaptchaData.score < 0.5) {
-    return NextResponse.json({ error: `reCAPTCHA failed: ${JSON.stringify(recaptchaData)}` }, { status: 400 })
-  }
-
   // Forward to Web3Forms
   const res = await fetch('https://api.web3forms.com/submit', {
     method: 'POST',
