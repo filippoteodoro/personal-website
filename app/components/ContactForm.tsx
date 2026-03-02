@@ -39,34 +39,36 @@ function Form() {
   }, [executeRecaptcha, fields])
 
   if (status === 'success') {
-    return <p className="text-sm text-gray-500">Thanks — I&apos;ll get back to you soon.</p>
+    return <p className="text-sm text-gray-500 dark:text-gray-400">Thanks — I&apos;ll get back to you soon.</p>
   }
+
+  const inputClass = "w-full border border-gray-200 dark:border-gray-700 rounded-md px-4 py-3 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-300 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600 dark:focus:ring-gray-400 transition"
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
 
       <div>
-        <label htmlFor="email" className="block text-xs text-gray-400 mb-1.5">Email</label>
+        <label htmlFor="email" className="block text-xs text-gray-400 dark:text-gray-500 mb-1.5">Email</label>
         <input
           id="email"
           type="email"
           required
           value={fields.email}
           onChange={e => setFields(f => ({ ...f, email: e.target.value }))}
-          className="w-full border border-gray-200 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 transition"
+          className={inputClass}
           placeholder="you@example.com"
         />
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-xs text-gray-400 mb-1.5">Message</label>
+        <label htmlFor="message" className="block text-xs text-gray-400 dark:text-gray-500 mb-1.5">Message</label>
         <textarea
           id="message"
           required
           rows={5}
           value={fields.message}
           onChange={e => setFields(f => ({ ...f, message: e.target.value }))}
-          className="w-full border border-gray-200 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 transition resize-none"
+          className={`${inputClass} resize-none`}
           placeholder="What's on your mind?"
         />
       </div>
@@ -78,7 +80,7 @@ function Form() {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="bg-gray-900 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-gray-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        className="bg-gray-600 dark:bg-gray-200 text-white dark:text-gray-900 px-6 py-3 rounded-md text-sm font-medium hover:bg-gray-500 dark:hover:bg-white transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === 'loading' ? 'Sending…' : 'Send message'}
       </button>
