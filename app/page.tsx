@@ -7,9 +7,6 @@ export default function Home() {
 
         {/* Hero */}
         <section className="mb-20">
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-1">
-            Filippo Teodoro
-          </h1>
           <div className="text-sm text-gray-600 leading-relaxed mb-8 space-y-4">
             <p>
               I work in strategy at Sky, in the CEO/CTO office. Before that, McKinsey and Bain —
