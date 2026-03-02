@@ -6,7 +6,7 @@ import { useState, FormEvent, useCallback } from 'react'
 function Form() {
   const { executeRecaptcha } = useGoogleReCaptcha()
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [fields, setFields] = useState({ name: '', email: '', message: '' })
+  const [fields, setFields] = useState({ email: '', message: '' })
 
   const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -32,19 +32,6 @@ function Form() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-
-      <div>
-        <label htmlFor="name" className="block text-xs text-gray-400 mb-1.5">Name</label>
-        <input
-          id="name"
-          type="text"
-          required
-          value={fields.name}
-          onChange={e => setFields(f => ({ ...f, name: e.target.value }))}
-          className="w-full border border-gray-200 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 transition"
-          placeholder="Your name"
-        />
-      </div>
 
       <div>
         <label htmlFor="email" className="block text-xs text-gray-400 mb-1.5">Email</label>

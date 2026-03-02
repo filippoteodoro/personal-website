@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from 'next/server'
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
-  const { name, email, message, token } = await req.json()
+  const { email, message, token } = await req.json()
 
-  if (!name || !email || !message || !token) {
+  if (!email || !message || !token) {
     return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
   }
 
@@ -31,10 +31,9 @@ export async function POST(req: NextRequest) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       access_key: process.env.WEB3FORMS_ACCESS_KEY,
-      name,
       email,
       message,
-      subject: `New message from ${name}`,
+      subject: `New message from ${email}`,
     }),
   })
 
