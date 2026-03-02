@@ -26,7 +26,7 @@ function Form() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          access_key: 'ba385ecc-fc29-4812-8db7-2a7fe9607b2d',
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
           ...fields,
           subject: `New message from ${fields.email}`,
         }),

@@ -23,6 +23,7 @@ npm run dev
 |---|---|
 | `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | reCAPTCHA v3 public key (safe to expose) |
 | `RECAPTCHA_SECRET_KEY` | reCAPTCHA v3 secret key (server-side only, never expose) |
+| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Web3Forms access key (safe to expose) |
 
 Set these in Vercel → Project Settings → Environment Variables.
 
