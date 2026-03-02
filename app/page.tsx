@@ -10,7 +10,7 @@ export default function Home() {
           <div className="text-sm text-gray-600 leading-relaxed mb-6 space-y-4">
             <p>
               Hello! I&apos;m Filippo Teodoro. I currently live in Milan and work in Strategy at
-              Sky, in the CEO/CTO offices. Before, I worked in consulting for McKinsey and Bain —
+              Sky, in the CEO/CTO offices. Before, I worked in consulting for McKinsey and Bain,
               mostly in private equity. Before, I worked for Amazon and a machine learning hedge
               fund in London.
             </p>
