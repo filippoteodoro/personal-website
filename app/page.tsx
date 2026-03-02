@@ -6,7 +6,7 @@ export default function Home() {
       <div className="max-w-xl mx-auto px-6 py-20">
 
         {/* Hero */}
-        <section className="mb-20">
+        <section className="mb-10">
           <div className="text-sm text-gray-600 leading-relaxed mb-8 space-y-4">
             <p>
               I work in strategy at Sky, in the CEO/CTO office. Before that, McKinsey and Bain —
@@ -31,7 +31,7 @@ export default function Home() {
           </nav>
         </section>
 
-        <hr className="border-gray-100 mb-20" />
+        <hr className="border-gray-100 mb-10" />
 
         {/* Contact */}
         <section>
