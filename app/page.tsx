@@ -22,7 +22,7 @@ export default function Home() {
             </p>
             <p>
               I still build things on the side. Outside of work: travel, markets, geopolitics,
-              startups, music, fashion&hellip;
+              startups, music, fashion, sports&hellip;
             </p>
           </div>
           <nav className="flex flex-wrap gap-x-6 gap-y-2">
