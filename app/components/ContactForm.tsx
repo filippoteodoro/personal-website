@@ -1,19 +1,15 @@
 'use client'
 
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3'
-import { useState, FormEvent, useCallback } from 'react'
+import { useState, FormEvent } from 'react'
 
-function Form() {
-  const { executeRecaptcha } = useGoogleReCaptcha()
+export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [errorMsg, setErrorMsg] = useState('')
   const [fields, setFields] = useState({ email: '', message: '' })
 
-  const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setStatus('loading')
     try {
-      const token = executeRecaptcha ? await executeRecaptcha('contact_form') : ''
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -21,21 +17,14 @@ function Form() {
           access_key: 'ba385ecc-fc29-4812-8db7-2a7fe9607b2d',
           ...fields,
           subject: `New message from ${fields.email}`,
-          'g-recaptcha-response': token,
         }),
       })
       const data = await res.json()
-      if (data.success) {
-        setStatus('success')
-      } else {
-        setErrorMsg(JSON.stringify(data))
-        setStatus('error')
-      }
-    } catch (err) {
-      setErrorMsg(String(err))
+      setStatus(data.success ? 'success' : 'error')
+    } catch {
       setStatus('error')
     }
-  }, [executeRecaptcha, fields])
+  }
 
   if (status === 'success') {
     return <p className="text-sm text-gray-500">Thanks — I&apos;ll get back to you soon.</p>
@@ -71,7 +60,7 @@ function Form() {
       </div>
 
       {status === 'error' && (
-        <p className="text-xs text-red-500">{errorMsg}</p>
+        <p className="text-xs text-red-500">Something went wrong. Please try again.</p>
       )}
 
       <button
@@ -83,13 +72,5 @@ function Form() {
       </button>
 
     </form>
-  )
-}
-
-export default function ContactForm() {
-  return (
-    <GoogleReCaptchaProvider reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}>
-      <Form />
-    </GoogleReCaptchaProvider>
   )
 }
