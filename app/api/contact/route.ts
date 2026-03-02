@@ -21,10 +21,12 @@ export async function POST(req: NextRequest) {
     }),
   })
 
-  const data = await res.json()
+  const text = await res.text()
+  let data: Record<string, unknown> = {}
+  try { data = JSON.parse(text) } catch { /* ignore */ }
 
   if (!res.ok || !data.success) {
-    return NextResponse.json({ error: `Web3Forms error: ${JSON.stringify(data)}` }, { status: 500 })
+    return NextResponse.json({ error: `Web3Forms: ${text}` }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })
