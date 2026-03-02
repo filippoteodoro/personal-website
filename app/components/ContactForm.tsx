@@ -72,10 +72,7 @@ function Form() {
       </div>
 
       {status === 'error' && (
-        <p className="text-xs text-red-500">
-          Something went wrong — please try again or email me directly at{' '}
-          <a href="mailto:info@filippoteodoro.com" className="underline">info@filippoteodoro.com</a>.
-        </p>
+        <p className="text-xs text-red-500">Something went wrong — please try again later.</p>
       )}
 
       <button
