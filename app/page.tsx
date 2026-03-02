@@ -6,8 +6,8 @@ export default function Home() {
       <div className="max-w-xl mx-auto px-6 py-20">
 
         {/* Hero */}
-        <section className="mb-10">
-          <div className="text-sm text-gray-600 leading-relaxed mb-8 space-y-4">
+        <section className="mb-6">
+          <div className="text-sm text-gray-600 leading-relaxed mb-6 space-y-4">
             <p>
               I&apos;m Filippo Teodoro. I work in strategy at Sky, in the CEO/CTO office. Before
               that, McKinsey and Bain — mostly private equity. Before that, Amazon and a machine
@@ -32,7 +32,7 @@ export default function Home() {
           </nav>
         </section>
 
-        <hr className="border-gray-100 mb-10" />
+        <hr className="border-gray-100 mb-6" />
 
         {/* Contact */}
         <section>
