@@ -10,7 +10,7 @@ export default function Home() {
           <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6 space-y-4">
             <p>
               Hello! I&apos;m Filippo Teodoro. I live in Milan and work in Strategy at Sky. On the
-              side I love to build things online. I built my corporate skills at McKinsey and Bain,
+              side I love to build things online. I developed my corporate skills at McKinsey and Bain,
               mostly in private equity. There I learned what high standards mean, but also that
               slides and excels only take you so far. Before that, I worked at Amazon and a machine
               learning hedge fund in London.
