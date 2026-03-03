@@ -24,7 +24,7 @@ export default function Home() {
               and have lived across Europe, South America and Asia.
             </p>
             <p>
-              Outside of work I love travel, sports, tech, finance, design, geopolitics, startups,
+              Outside of work I love travel, sports, health, tech, finance, design, geopolitics, startups,
               music, fashion&hellip;
             </p>
           </div>
