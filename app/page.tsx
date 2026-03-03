@@ -1,4 +1,26 @@
 import ContactForm from './components/ContactForm'
+import Script from 'next/script'
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Filippo Teodoro',
+  url: 'https://filippoteodoro.com',
+  jobTitle: 'Strategy Manager',
+  worksFor: { '@type': 'Organization', name: 'Sky' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Milan', addressCountry: 'IT' },
+  alumniOf: [
+    { '@type': 'CollegeOrUniversity', name: 'University of Bologna' },
+    { '@type': 'CollegeOrUniversity', name: 'ESSEC Business School' },
+  ],
+  sameAs: [
+    'https://www.instagram.com/filippoteodoro/',
+    'https://www.linkedin.com/in/filippoteodoro/',
+    'https://x.com/FilippoTeodoro',
+    'https://www.facebook.com/teodorofilippo',
+    'https://github.com/filippoteodoro',
+  ],
+}
 
 const linkClass = "underline underline-offset-2"
 const navLinkClass = "text-sm text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
@@ -39,9 +61,9 @@ export default function Home() {
             </p>
           </div>
           <nav aria-label="Social links" className="flex flex-wrap gap-x-6 gap-y-2">
+            <a href="https://www.instagram.com/filippoteodoro/" target="_blank" rel="noopener noreferrer" className={navLinkClass}>Instagram ↗</a>
             <a href="https://www.linkedin.com/in/filippoteodoro/" target="_blank" rel="noopener noreferrer" className={navLinkClass}>LinkedIn ↗</a>
             <a href="https://x.com/FilippoTeodoro" target="_blank" rel="noopener noreferrer" className={navLinkClass}>X ↗</a>
-            <a href="https://www.instagram.com/filippoteodoro/" target="_blank" rel="noopener noreferrer" className={navLinkClass}>Instagram ↗</a>
             <a href="https://www.facebook.com/teodorofilippo" target="_blank" rel="noopener noreferrer" className={navLinkClass}>Facebook ↗</a>
             <a href="https://github.com/filippoteodoro" target="_blank" rel="noopener noreferrer" className={navLinkClass}>GitHub ↗</a>
           </nav>
@@ -62,6 +84,11 @@ export default function Home() {
         </footer>
 
       </div>
+      <Script
+        id="json-ld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     </main>
   )
 }
