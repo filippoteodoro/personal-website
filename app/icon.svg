@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cutive&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
     text {
-      font-family: 'Cutive', Georgia, serif;
+      font-family: 'Courier Prime', 'Courier New', monospace;
       font-size: 52px;
       fill: #111;
     }
