@@ -9,20 +9,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false }, { status: 400 })
   }
 
-  const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      secret: process.env.RECAPTCHA_SECRET_KEY!,
-      response: token,
-    }),
-  })
+  try {
+    const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        secret: process.env.RECAPTCHA_SECRET_KEY ?? '',
+        response: token,
+      }),
+    })
 
-  const data = await res.json() as { success: boolean; score: number; 'error-codes'?: string[] }
+    const data = await res.json() as { success: boolean; score: number }
 
-  if (!data.success || data.score < 0.5) {
-    return NextResponse.json({ success: false }, { status: 400 })
+    if (!data.success || data.score < 0.5) {
+      return NextResponse.json({ success: false }, { status: 400 })
+    }
+
+    return NextResponse.json({ success: true })
+  } catch {
+    return NextResponse.json({ success: false }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true })
 }

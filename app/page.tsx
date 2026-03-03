@@ -1,14 +1,13 @@
 import ContactForm from './components/ContactForm'
 
-export default function Home() {
-  const linkClass = "underline underline-offset-2"
-  const navLinkClass = "text-sm text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+const linkClass = "underline underline-offset-2"
+const navLinkClass = "text-sm text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
 
+export default function Home() {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950">
       <div className="max-w-xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
 
-        {/* Hero */}
         <section className="mb-6">
           <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6 space-y-4">
             <p>
@@ -39,7 +38,7 @@ export default function Home() {
               geopolitics, startups, music, fashion&hellip;
             </p>
           </div>
-          <nav className="flex flex-wrap gap-x-6 gap-y-2">
+          <nav aria-label="Social links" className="flex flex-wrap gap-x-6 gap-y-2">
             <a href="https://www.linkedin.com/in/filippoteodoro/" target="_blank" rel="noopener noreferrer" className={navLinkClass}>LinkedIn ↗</a>
             <a href="https://x.com/FilippoTeodoro" target="_blank" rel="noopener noreferrer" className={navLinkClass}>X ↗</a>
             <a href="https://www.instagram.com/filippoteodoro/" target="_blank" rel="noopener noreferrer" className={navLinkClass}>Instagram ↗</a>
@@ -50,9 +49,8 @@ export default function Home() {
 
         <hr className="border-gray-100 dark:border-gray-800 mb-6" />
 
-        {/* Contact */}
-        <section>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">Say hello</h2>
+        <section aria-labelledby="contact-heading">
+          <h2 id="contact-heading" className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">Say hello</h2>
           <p className="text-sm text-gray-400 dark:text-gray-500 mb-8">
             Drop me a message — I read everything.
           </p>
