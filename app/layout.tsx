@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
-import { Saira } from 'next/font/google'
+import { Cutive } from 'next/font/google'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const saira = Saira({ subsets: ['latin'], weight: ['300', '400', '500', '600'] })
+const cutive = Cutive({ subsets: ['latin'], weight: '400' })
 
 export const metadata: Metadata = {
   title: 'Filippo Teodoro',
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={saira.className}>{children}</body>
+      <body className={cutive.className}>{children}</body>
       <GoogleAnalytics gaId="G-GMFJT73TES" />
       <Analytics />
     </html>
