@@ -19,7 +19,7 @@ It drives: page text, Open Graph tags, Twitter card, JSON-LD schema, social nav 
 | `app/page.tsx` | Homepage JSX — bio paragraphs with inline links live here |
 | `app/layout.tsx` | Root layout: font (Courier Prime), metadata, GA4, Vercel Analytics |
 | `app/globals.css` | Tailwind import + reCAPTCHA badge hidden |
-| `app/icon.svg` | SVG favicon with dark/light mode — update font-family if font changes |
+| `app/icon.tsx` | PNG favicon (32×32) via ImageResponse — edit text/colors here |
 | `app/sitemap.ts` | Auto-generates `/sitemap.xml` |
 | `app/robots.ts` | Auto-generates `/robots.txt` |
 | `app/llms.txt/route.ts` | Dynamic `/llms.txt` derived from `lib/content.ts` |
@@ -29,7 +29,7 @@ It drives: page text, Open Graph tags, Twitter card, JSON-LD schema, social nav 
 
 ## Contact form flow
 
-1. User submits form → `executeRecaptcha('contact_form')` fires client-side
+1. User submits form → `window.grecaptcha.execute()` fires client-side (script lazy-loaded via IntersectionObserver)
 2. Token sent to `/api/verify-captcha` → verified against Google (score ≥ 0.5)
 3. If valid → form submits directly from browser to Web3Forms API
 4. Web3Forms delivers email to inbox
@@ -52,7 +52,7 @@ Automatic via Tailwind `dark:` variants + `prefers-color-scheme`. No toggle. The
 
 Currently **Courier Prime** (Google Fonts). To change:
 1. Update import and variable in `app/layout.tsx`
-2. Update `@import` and `font-family` in `app/icon.svg`
+2. Update `fontFamily` in `app/icon.tsx`
 
 ## Deployment
 

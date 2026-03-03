@@ -5,7 +5,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { content } from '@/lib/content'
 import './globals.css'
 
-const courierPrime = Courier_Prime({ subsets: ['latin'], weight: ['400', '700'] })
+const courierPrime = Courier_Prime({ subsets: ['latin'], weight: ['400', '700'], display: 'optional' })
 
 export const metadata: Metadata = {
   title: content.name,

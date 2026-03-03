@@ -18,7 +18,7 @@ const jsonLd = {
 }
 
 const linkClass = "underline underline-offset-2"
-const navLinkClass = "text-sm text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+const navLinkClass = "text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
 
 export default function Home() {
   return (
@@ -68,13 +68,13 @@ export default function Home() {
 
         <section aria-labelledby="contact-heading">
           <h2 id="contact-heading" className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">Say hello</h2>
-          <p className="text-sm text-gray-400 dark:text-gray-500 mb-8">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-8">
             Drop me a message — I read everything.
           </p>
           <ContactForm />
         </section>
 
-        <footer className="mt-20 text-xs text-gray-300 dark:text-gray-600">
+        <footer className="mt-20 text-xs text-gray-500 dark:text-gray-500">
           © {new Date().getFullYear()} Filippo Teodoro
         </footer>
 
