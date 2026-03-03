@@ -1,5 +1,4 @@
 import ContactForm from './components/ContactForm'
-import Script from 'next/script'
 import { content } from '@/lib/content'
 
 const jsonLd = {
@@ -79,8 +78,7 @@ export default function Home() {
         </footer>
 
       </div>
-      <Script
-        id="json-ld"
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
