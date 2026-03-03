@@ -32,7 +32,7 @@ export default function Home() {
               my first year of university in Buenos Aires, where I consolidated my confidence and
               realised that if I was willing to give it a chance, the world was there to teach me
               something I didn&apos;t know about myself. Then I also studied in Barcelona,
-              Singapore and Paris.
+              Singapore &lt;3 and Paris.
             </p>
             <p>
               Outside of work I love cultures, nature, sports, health, tech, finance, design,
