@@ -2,25 +2,26 @@ import type { Metadata, Viewport } from 'next'
 import { Courier_Prime } from 'next/font/google'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { Analytics } from '@vercel/analytics/next'
+import { content } from '@/lib/content'
 import './globals.css'
 
 const courierPrime = Courier_Prime({ subsets: ['latin'], weight: ['400', '700'] })
 
 export const metadata: Metadata = {
-  title: 'Filippo Teodoro',
-  description: 'Strategy at Sky. Builder. Curious about everything.',
-  metadataBase: new URL('https://filippoteodoro.com'),
+  title: content.name,
+  description: content.description,
+  metadataBase: new URL(content.url),
   openGraph: {
-    title: 'Filippo Teodoro',
-    description: 'Strategy at Sky. Builder. Curious about everything.',
-    url: 'https://filippoteodoro.com',
-    siteName: 'Filippo Teodoro',
+    title: content.name,
+    description: content.description,
+    url: content.url,
+    siteName: content.name,
     type: 'website',
   },
   twitter: {
     card: 'summary',
-    title: 'Filippo Teodoro',
-    description: 'Strategy at Sky. Builder. Curious about everything.',
+    title: content.name,
+    description: content.description,
     creator: '@FilippoTeodoro',
   },
   robots: { index: true, follow: true },
