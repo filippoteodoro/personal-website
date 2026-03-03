@@ -1,46 +1,50 @@
 import ContactForm from './components/ContactForm'
 
 export default function Home() {
+  const linkClass = "underline underline-offset-2"
+  const navLinkClass = "text-sm text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950">
-      <div className="max-w-xl mx-auto px-6 py-20">
+      <div className="max-w-xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
 
         {/* Hero */}
         <section className="mb-6">
           <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6 space-y-4">
             <p>
               Hello! I&apos;m Filippo Teodoro. I live in Milan and work in Strategy at{' '}
-              <a href="https://www.sky.it/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Sky</a>.
+              <a href="https://www.sky.it/" target="_blank" rel="noopener noreferrer" className={linkClass}>Sky</a>.
               {' '}On the side I love to build things online. I developed my corporate skills at{' '}
-              <a href="https://www.mckinsey.com/it/our-work/private-equity" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">McKinsey</a>
+              <a href="https://www.mckinsey.com/it/our-work/private-equity" target="_blank" rel="noopener noreferrer" className={linkClass}>McKinsey</a>
               {' '}and{' '}
-              <a href="https://www.bain.com/industry-expertise/private-equity/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Bain</a>,
+              <a href="https://www.bain.com/industry-expertise/private-equity/" target="_blank" rel="noopener noreferrer" className={linkClass}>Bain</a>,
               mostly in private equity. There I learned what high standards mean, but also that
               slides and excels would only take me so far. Before that, I worked at{' '}
-              <a href="https://www.amazon.jobs/en/location/luxembourg-city-luxembourg" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Amazon</a>
-              {' '}and a machine learning{' '}
-              <a href="https://www.euklid.uk.com/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">hedge fund</a>
-              {' '}in London.
+              <a href="https://www.amazon.jobs/en/location/luxembourg-city-luxembourg" target="_blank" rel="noopener noreferrer" className={linkClass}>Amazon</a>,
+              a machine learning{' '}
+              <a href="https://www.euklid.uk.com/" target="_blank" rel="noopener noreferrer" className={linkClass}>hedge fund</a>
+              {' '}in London and several startups.
             </p>
             <p>
               I grew up in a small town near Rome called Viterbo and used the internet to make it
-              feel much bigger by building businesses, learning about the world and playing video games. At the first opportunity I had, I flew as far from home as I could: I
-              spent my first year of university in Buenos Aires, where I consolidated my confidence and
+              feel much bigger by building businesses, learning about the world and playing video
+              games. At the first opportunity I had, I flew as far from home as I could: I spent
+              my first year of university in Buenos Aires, where I consolidated my confidence and
               realised that if I was willing to give it a chance, the world was there to teach me
-              something I didn&apos;t know about myself. Then I also studied in Barcelona and Paris,
-              and have lived across Europe, South America and Asia.
+              something I didn&apos;t know about myself. Then I also studied in Barcelona,
+              Singapore and Paris.
             </p>
             <p>
-              Outside of work I love cultures, nature, sports, health, tech, finance, design, geopolitics, startups,
-              music, fashion&hellip;
+              Outside of work I love cultures, nature, sports, health, tech, finance, design,
+              geopolitics, startups, music, fashion&hellip;
             </p>
           </div>
           <nav className="flex flex-wrap gap-x-6 gap-y-2">
-            <a href="https://www.linkedin.com/in/filippoteodoro/" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">LinkedIn ↗</a>
-            <a href="https://x.com/FilippoTeodoro" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">X ↗</a>
-            <a href="https://www.instagram.com/filippoteodoro/" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">Instagram ↗</a>
-            <a href="https://www.facebook.com/teodorofilippo" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">Facebook ↗</a>
-            <a href="https://github.com/filippoteodoro" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">GitHub ↗</a>
+            <a href="https://www.linkedin.com/in/filippoteodoro/" target="_blank" rel="noopener noreferrer" className={navLinkClass}>LinkedIn ↗</a>
+            <a href="https://x.com/FilippoTeodoro" target="_blank" rel="noopener noreferrer" className={navLinkClass}>X ↗</a>
+            <a href="https://www.instagram.com/filippoteodoro/" target="_blank" rel="noopener noreferrer" className={navLinkClass}>Instagram ↗</a>
+            <a href="https://www.facebook.com/teodorofilippo" target="_blank" rel="noopener noreferrer" className={navLinkClass}>Facebook ↗</a>
+            <a href="https://github.com/filippoteodoro" target="_blank" rel="noopener noreferrer" className={navLinkClass}>GitHub ↗</a>
           </nav>
         </section>
 
