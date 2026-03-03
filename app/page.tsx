@@ -18,7 +18,7 @@ export default function Home() {
             <p>
               I grew up in a small town near Rome called Viterbo and used the internet to make it
               feel much bigger by building businesses, learning about the world and playing video games. At the first opportunity I had, I flew as far from home as I could: I
-              spent my first year of university in Buenos Aires, where I cemented my confidence and
+              spent my first year of university in Buenos Aires, where I consolidated my confidence and
               realised that if I was willing to give it a chance, the world was there to teach me
               something I didn&apos;t know about myself. Then I also studied in Barcelona and Paris,
               and have lived across Europe, South America and Asia.
