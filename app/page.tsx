@@ -9,11 +9,18 @@ export default function Home() {
         <section className="mb-6">
           <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6 space-y-4">
             <p>
-              Hello! I&apos;m Filippo Teodoro. I live in Milan and work in Strategy at Sky. On the
-              side I love to build things online. I developed my corporate skills at McKinsey and Bain,
+              Hello! I&apos;m Filippo Teodoro. I live in Milan and work in Strategy at{' '}
+              <a href="https://www.sky.it/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Sky</a>.
+              {' '}On the side I love to build things online. I developed my corporate skills at{' '}
+              <a href="https://www.mckinsey.com/it/our-work/private-equity" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">McKinsey</a>
+              {' '}and{' '}
+              <a href="https://www.bain.com/industry-expertise/private-equity/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Bain</a>,
               mostly in private equity. There I learned what high standards mean, but also that
-              slides and excels would only take me so far. Before that, I worked at Amazon and a machine
-              learning hedge fund in London.
+              slides and excels would only take me so far. Before that, I worked at{' '}
+              <a href="https://www.amazon.jobs/en/location/luxembourg-city-luxembourg" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Amazon</a>
+              {' '}and a machine learning{' '}
+              <a href="https://www.euklid.uk.com/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">hedge fund</a>
+              {' '}in London.
             </p>
             <p>
               I grew up in a small town near Rome called Viterbo and used the internet to make it
