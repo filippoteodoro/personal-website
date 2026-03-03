@@ -68,6 +68,6 @@ Set these in Vercel → Project Settings → Environment Variables.
 - [ ] Get reCAPTCHA v3 keys at https://www.google.com/recaptcha/admin — select **Score based (v3)**, add `filippoteodoro.com` as an allowed domain
 - [ ] Get a Web3Forms access key at https://web3forms.com (free, no domain verification needed)
 - [ ] Add all three env vars in Vercel → Project Settings → Environment Variables
-- [ ] Enable Vercel Web Analytics: Vercel dashboard → project → Analytics tab → Enable
+- [x] Enable Vercel Web Analytics: Vercel dashboard → project → Analytics tab → Enable
 - [ ] The Google Analytics ID (`G-GMFJT73TES`) is hardcoded in `app/layout.tsx` — update if the property changes
 - [ ] Connect the repo to a Vercel project and add the domain `filippoteodoro.com`
