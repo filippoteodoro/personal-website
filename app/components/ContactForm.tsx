@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, FormEvent, useCallback } from 'react'
+import { useState, useRef, FormEvent, useCallback } from 'react'
 
 declare global {
   interface Window {
@@ -16,25 +16,16 @@ export default function ContactForm() {
   const [scriptReady, setScriptReady] = useState(false)
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [fields, setFields] = useState({ email: '', message: '' })
-  const containerRef = useRef<HTMLDivElement>(null)
+  const loadedRef = useRef(false)
 
-  useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return
-        observer.disconnect()
-        const script = document.createElement('script')
-        script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
-        script.onload = () => setScriptReady(true)
-        document.head.appendChild(script)
-      },
-      { rootMargin: '300px' }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [siteKey])
+  function loadRecaptcha() {
+    if (loadedRef.current) return
+    loadedRef.current = true
+    const script = document.createElement('script')
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
+    script.onload = () => setScriptReady(true)
+    document.head.appendChild(script)
+  }
 
   const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -74,7 +65,7 @@ export default function ContactForm() {
   const inputClass = "w-full border border-gray-200 dark:border-gray-700 rounded-md px-4 py-3 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-300 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600 dark:focus:ring-gray-400 transition"
 
   return (
-    <div ref={containerRef}>
+    <div onPointerEnter={loadRecaptcha} onFocus={loadRecaptcha}>
       <form onSubmit={handleSubmit} className="space-y-5">
 
         <div>
