@@ -42,10 +42,10 @@ export default function Home() {
             </p>
             <p>
               I grew up in a small town near Rome called Viterbo and used the internet to make it
-              feel much bigger by building businesses, learning about the world and playing video
+              feel much bigger by launching ventures, learning about the world and playing video
               games. At the first opportunity I had, I flew as far from home as I could: I spent
               my first year of university in Buenos Aires, where I consolidated my confidence and
-              realised that if I was willing to give it a chance, the world was there to teach me
+              realised that if I was willing to give it a chance, each side of the world could teach me
               something I didn&apos;t know about myself. Then I also studied in Barcelona,
               Singapore &lt;3 and Paris.
             </p>
@@ -66,10 +66,7 @@ export default function Home() {
         <hr className="border-gray-100 dark:border-gray-800 mb-6" />
 
         <section aria-labelledby="contact-heading">
-          <h2 id="contact-heading" className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">Say hello</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-8">
-            Drop me a message — I read everything.
-          </p>
+          <h2 id="contact-heading" className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-8">Drop a message — I read everything</h2>
           <ContactForm />
         </section>
 

@@ -16,6 +16,11 @@ export default function ContactForm() {
   const [scriptReady, setScriptReady] = useState(false)
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [fields, setFields] = useState({ email: '', message: '' })
+  const [emailError, setEmailError] = useState('')
+
+  function validateEmail(value: string) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)
+  }
   const loadedRef = useRef(false)
 
   function loadRecaptcha() {
@@ -30,6 +35,7 @@ export default function ContactForm() {
   const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!window.grecaptcha) { setStatus('error'); return }
+    if (!validateEmail(fields.email)) { setEmailError('Please enter a valid email address.'); return }
     setStatus('loading')
     try {
       await new Promise<void>(resolve => window.grecaptcha.ready(resolve))
@@ -75,10 +81,12 @@ export default function ContactForm() {
             type="email"
             required
             value={fields.email}
-            onChange={e => setFields(f => ({ ...f, email: e.target.value }))}
+            onChange={e => { setFields(f => ({ ...f, email: e.target.value })); setEmailError('') }}
+            onBlur={e => { if (e.target.value && !validateEmail(e.target.value)) setEmailError('Please enter a valid email address.') }}
             className={inputClass}
             placeholder="you@example.com"
           />
+          {emailError && <p className="text-xs text-red-500 mt-1">{emailError}</p>}
         </div>
 
         <div>
