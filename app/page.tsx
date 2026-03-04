@@ -66,7 +66,7 @@ export default function Home() {
         <hr className="border-gray-100 dark:border-gray-800 mb-6" />
 
         <section aria-labelledby="contact-heading">
-          <h2 id="contact-heading" className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-8">Drop a message</h2>
+          <h2 id="contact-heading" className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Drop a message</h2>
           <ContactForm />
         </section>
 

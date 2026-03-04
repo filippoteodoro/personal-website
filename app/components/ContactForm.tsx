@@ -111,7 +111,7 @@ export default function ContactForm() {
           disabled={status === 'loading' || !scriptReady}
           className="bg-gray-600 dark:bg-gray-200 text-white dark:text-gray-900 px-6 py-3 rounded-md text-sm font-medium hover:bg-gray-500 dark:hover:bg-white transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {status === 'loading' ? 'Sending…' : 'Send message'}
+          {status === 'loading' ? 'Sending…' : 'Send'}
         </button>
 
       </form>
