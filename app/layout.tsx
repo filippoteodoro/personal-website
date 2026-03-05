@@ -6,6 +6,12 @@ import { content } from '@/lib/content'
 import './globals.css'
 
 const courierPrime = Courier_Prime({ subsets: ['latin'], weight: ['400', '700'], display: 'optional' })
+type RootLayoutProps = Readonly<{ children: React.ReactNode }>
+
+function getGoogleAnalyticsId(): string | undefined {
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim()
+  return gaId || undefined
+}
 
 export const metadata: Metadata = {
   title: content.name,
@@ -34,8 +40,8 @@ export const viewport: Viewport = {
   ],
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim()
+export default function RootLayout({ children }: RootLayoutProps): React.JSX.Element {
+  const gaId = getGoogleAnalyticsId()
 
   return (
     <html lang="en">

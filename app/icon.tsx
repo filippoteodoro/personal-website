@@ -3,11 +3,19 @@ import { ImageResponse } from 'next/og'
 export const size = { width: 32, height: 32 }
 export const contentType = 'image/png'
 
-export default async function Icon() {
-  // Fetch TTF directly from Google Fonts GitHub (stable, Satori-compatible format)
-  const fontData = await fetch(
-    'https://raw.githubusercontent.com/google/fonts/main/ofl/courierprime/CourierPrime-Bold.ttf'
-  ).then(r => r.arrayBuffer()).catch(() => null)
+const FONT_URL = 'https://raw.githubusercontent.com/google/fonts/main/ofl/courierprime/CourierPrime-Bold.ttf'
+
+async function loadFontData(): Promise<ArrayBuffer | null> {
+  try {
+    const response = await fetch(FONT_URL)
+    return await response.arrayBuffer()
+  } catch {
+    return null
+  }
+}
+
+export default async function Icon(): Promise<ImageResponse> {
+  const fontData = await loadFontData()
 
   return new ImageResponse(
     <div

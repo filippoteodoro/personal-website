@@ -9,8 +9,13 @@ type RecaptchaVerifyResponse = {
   action?: string
   hostname?: string
 }
+type VerifyCaptchaRequestBody = { token?: string }
 
 const DEFAULT_HOSTNAMES = [new URL(content.url).hostname, 'localhost']
+const MIN_RECAPTCHA_SCORE = 0.5
+const CAPTCHA_ACTION = 'contact_form'
+const FAILURE_RESPONSE = { success: false } as const
+const SUCCESS_RESPONSE = { success: true } as const
 
 function parseExpectedHostnames(): string[] {
   const raw = process.env.RECAPTCHA_EXPECTED_HOSTNAMES
@@ -31,17 +36,31 @@ function hostnameMatches(hostname: string | undefined, expectedHostnames: string
   return expectedHostnames.some(expected => normalized === expected || normalized.endsWith(`.${expected}`))
 }
 
-export async function POST(req: NextRequest) {
-  const { token } = await req.json()
+function errorResponse(status: 400 | 500): NextResponse {
+  return NextResponse.json(FAILURE_RESPONSE, { status })
+}
+
+function isCaptchaResponseValid(
+  data: RecaptchaVerifyResponse,
+  expectedHostnames: string[]
+): boolean {
+  if (!data.success) return false
+  if (typeof data.score !== 'number' || data.score < MIN_RECAPTCHA_SCORE) return false
+  if (data.action !== CAPTCHA_ACTION) return false
+  return hostnameMatches(data.hostname, expectedHostnames)
+}
+
+export async function POST(req: NextRequest): Promise<NextResponse> {
+  const { token } = (await req.json()) as VerifyCaptchaRequestBody
   const secretKey = process.env.RECAPTCHA_SECRET_KEY
   const expectedHostnames = parseExpectedHostnames()
 
   if (!token) {
-    return NextResponse.json({ success: false }, { status: 400 })
+    return errorResponse(400)
   }
 
   if (!secretKey) {
-    return NextResponse.json({ success: false }, { status: 500 })
+    return errorResponse(500)
   }
 
   try {
@@ -56,20 +75,12 @@ export async function POST(req: NextRequest) {
 
     const data = await res.json() as RecaptchaVerifyResponse
 
-    if (!data.success || typeof data.score !== 'number' || data.score < 0.5) {
-      return NextResponse.json({ success: false }, { status: 400 })
+    if (!isCaptchaResponseValid(data, expectedHostnames)) {
+      return errorResponse(400)
     }
 
-    if (data.action !== 'contact_form') {
-      return NextResponse.json({ success: false }, { status: 400 })
-    }
-
-    if (!hostnameMatches(data.hostname, expectedHostnames)) {
-      return NextResponse.json({ success: false }, { status: 400 })
-    }
-
-    return NextResponse.json({ success: true })
+    return NextResponse.json(SUCCESS_RESPONSE)
   } catch {
-    return NextResponse.json({ success: false }, { status: 500 })
+    return errorResponse(500)
   }
 }
