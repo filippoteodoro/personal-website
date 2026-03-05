@@ -35,11 +35,13 @@ export const viewport: Viewport = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim()
+
   return (
     <html lang="en">
       <body className={courierPrime.className}>
         {children}
-        <GoogleAnalytics gaId="G-GMFJT73TES" />
+        {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
         <Analytics />
       </body>
     </html>

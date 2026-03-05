@@ -1,55 +1,40 @@
 # filippoteodoro.com
 
-Personal website. Built with Next.js 15, deployed on Vercel.
+Personal website built with Next.js and deployed on Vercel.
 
 ## Stack
 
 | Layer | Technology |
 |---|---|
-| Framework | Next.js 15 (App Router) |
-| Styling | Tailwind CSS 4 |
+| Framework | Next.js (App Router) |
+| Styling | Tailwind CSS |
 | Font | Courier Prime (Google Fonts) |
-| Contact form | Web3Forms (client-side submission) |
-| Spam protection | Google reCAPTCHA v3 (server-side token verification) |
+| Contact form | Web3Forms |
+| Spam protection | Google reCAPTCHA v3 (server-side verification) |
 | Analytics | Google Analytics 4 + Vercel Web Analytics |
 | Deployment | Vercel |
 
 ## Architecture
 
-```
+```text
 app/
-  layout.tsx              # Root layout — font, metadata, analytics
-  page.tsx                # Homepage
-  globals.css             # Tailwind + reCAPTCHA badge hide
-  icon.svg                # Favicon (dark/light mode aware)
-  sitemap.ts              # Auto-generated sitemap.xml
-  robots.ts               # Auto-generated robots.txt
-  llms.txt/route.ts       # Dynamic llms.txt for LLM discoverability
-  components/
-    ContactForm.tsx        # reCAPTCHA + Web3Forms contact form
-  api/
-    verify-captcha/
-      route.ts            # Server-side reCAPTCHA token verification
+  api/verify-captcha/route.ts  # Server-side reCAPTCHA verification
+  components/ContactForm.tsx   # Contact form UI + client-side token flow
+  icon.tsx                     # Dynamic favicon
+  llms.txt/route.ts            # Dynamic llms.txt
+  layout.tsx                   # Root layout, metadata, analytics
+  page.tsx                     # Homepage
+  robots.ts                    # robots.txt
+  sitemap.ts                   # sitemap.xml
 lib/
-  content.ts              # ← Single source of truth for bio, social links, metadata
-public/                   # Static assets
+  content.ts                   # Source of truth for bio/links/metadata
 ```
-
-## Content updates
-
-**All bio text, social links, and metadata flow from a single file:**
-
-```
-lib/content.ts
-```
-
-Edit that file and everything updates automatically on deploy — the page, Open Graph tags, JSON-LD schema, social nav, and `llms.txt`.
 
 ## Local development
 
 ```bash
 npm install
-cp .env.example .env.local   # fill in the values
+cp .env.example .env.local
 npm run dev
 ```
 
@@ -57,17 +42,24 @@ npm run dev
 
 | Variable | Description |
 |---|---|
-| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | reCAPTCHA v3 public key (safe to expose) |
-| `RECAPTCHA_SECRET_KEY` | reCAPTCHA v3 secret key — server-side only, never expose |
-| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Web3Forms access key (safe to expose) |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 measurement ID (public identifier). Leave empty to disable GA. |
+| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | reCAPTCHA v3 public site key (safe to expose). |
+| `RECAPTCHA_SECRET_KEY` | reCAPTCHA v3 secret key (server-side only). |
+| `RECAPTCHA_EXPECTED_HOSTNAMES` | Optional comma-separated hostnames to accept in server verification. Defaults to `filippoteodoro.com,localhost`. |
+| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Web3Forms access key (safe to expose). |
 
-Set these in Vercel → Project Settings → Environment Variables.
+Set production values in Vercel -> Project Settings -> Environment Variables.
 
-## First-time setup checklist
+## Security notes
 
-- [ ] Get reCAPTCHA v3 keys at https://www.google.com/recaptcha/admin — select **Score based (v3)**, add `filippoteodoro.com` as an allowed domain
-- [ ] Get a Web3Forms access key at https://web3forms.com (free, no domain verification needed)
-- [ ] Add all three env vars in Vercel → Project Settings → Environment Variables
-- [x] Enable Vercel Web Analytics: Vercel dashboard → project → Analytics tab → Enable
-- [ ] The Google Analytics ID (`G-GMFJT73TES`) is hardcoded in `app/layout.tsx` — update if the property changes
-- [ ] Connect the repo to a Vercel project and add the domain `filippoteodoro.com`
+- `verify-captcha` validates reCAPTCHA `success`, `score`, `action`, and `hostname`.
+- Security headers are set in `next.config.ts` (`X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`).
+- `.env` and `.env*.local` are ignored by git.
+
+## Setup checklist
+
+- [ ] Create reCAPTCHA v3 keys at https://www.google.com/recaptcha/admin.
+- [ ] Create a Web3Forms access key at https://web3forms.com.
+- [ ] Set all required environment variables in Vercel.
+- [ ] Enable Vercel Web Analytics in the Vercel project.
+- [ ] Connect custom domain `filippoteodoro.com`.
