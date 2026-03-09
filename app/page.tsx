@@ -4,15 +4,19 @@ import { content } from '@/lib/content'
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
+  '@id': `${content.url}#person`,
   name: content.name,
+  description: content.description,
   url: content.url,
-  jobTitle: 'Strategy Manager',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': content.url },
+  jobTitle: content.currentRole,
   worksFor: { '@type': 'Organization', name: 'Sky' },
   address: { '@type': 'PostalAddress', addressLocality: 'Milan', addressCountry: 'IT' },
   alumniOf: [
     { '@type': 'CollegeOrUniversity', name: 'University of Bologna' },
     { '@type': 'CollegeOrUniversity', name: 'ESSEC Business School' },
   ],
+  knowsAbout: content.interests,
   sameAs: content.social.map(socialLink => socialLink.url),
 }
 
@@ -37,6 +41,9 @@ export default function Home(): React.JSX.Element {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950">
       <div className="max-w-xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+        <h1 className="sr-only">
+          {content.name} - {content.description}
+        </h1>
         <section className="mb-6">
           <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6 space-y-4">
             <p>

@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: content.name,
   description: content.description,
   metadataBase: new URL(content.url),
+  alternates: {
+    canonical: content.url,
+  },
   openGraph: {
     title: content.name,
     description: content.description,
