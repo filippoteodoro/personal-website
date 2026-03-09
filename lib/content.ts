@@ -73,7 +73,7 @@ const bioParagraphs: BioParagraph[] = [
     { type: 'text', value: ' in London and several startups.' },
   ],
   [
-    { type: 'text', value: 'I grew up in a small town near Rome called Viterbo and used the internet to make it feel much bigger by launching ventures, learning about the world and playing video games. At the first opportunity I had, I flew as far from home as I could: I spent my first year of university in Buenos Aires, where I consolidated my confidence and realised that if I was willing to give it a chance, each side of the world could teach me something I didn\'t know about myself. Then I also studied in Barcelona, Singapore <3 and Paris.' },
+    { type: 'text', value: 'I grew up in a small town near Rome called Viterbo and used the internet to make it feel much bigger by launching ventures, learning about the world and playing video games. At the first opportunity I had, I flew as far from home as I could: I spent my first year of university in Buenos Aires, where I consolidated my confidence and realised that, if I was willing to give it a chance, the world could always teach me something I didn\'t know about myself. Then I also studied in Barcelona, Singapore <3 and Paris.' },
   ],
   [
     { type: 'text', value: 'Outside of work I love cultures, nature, sports, health, tech, finance, design, geopolitics, startups, music, fashion...' },
