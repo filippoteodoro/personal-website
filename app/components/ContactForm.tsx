@@ -53,11 +53,11 @@ function getEmailError(value: string): string {
   const normalizedValue = value.trim()
 
   if (!normalizedValue) {
-    return 'Need your email so I can write back.'
+    return 'Need your email so I can write back'
   }
 
   if (!validateEmail(normalizedValue)) {
-    return 'That email does not look valid yet.'
+    return 'That email does not look valid yet'
   }
 
   return ''
@@ -65,7 +65,7 @@ function getEmailError(value: string): string {
 
 function getMessageError(value: string): string {
   if (!value.trim()) {
-    return 'Write a message before sending.'
+    return 'Write a message before sending'
   }
 
   return ''
@@ -85,22 +85,20 @@ function getVisibleFieldErrors(fieldErrors: FieldErrors, touchedFields: TouchedF
   }
 }
 
-function getErrorMessages(fieldErrors: FieldErrors): string[] {
-  const messages: string[] = []
+function hasFieldErrors(fieldErrors: FieldErrors): boolean {
+  return Boolean(fieldErrors.email || fieldErrors.message)
+}
 
+function getFirstInvalidFieldName(fieldErrors: FieldErrors): FieldName | null {
   if (fieldErrors.email) {
-    messages.push(fieldErrors.email)
+    return 'email'
   }
 
   if (fieldErrors.message) {
-    messages.push(fieldErrors.message)
+    return 'message'
   }
 
-  return messages
-}
-
-function hasFieldErrors(fieldErrors: FieldErrors): boolean {
-  return Boolean(fieldErrors.email || fieldErrors.message)
+  return null
 }
 
 function getInputClassName(hasError: boolean): string {
@@ -139,6 +137,8 @@ function FeedbackPanel({ title, messages }: FeedbackPanelProps): React.JSX.Eleme
 export default function ContactForm(): React.JSX.Element {
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!
   const loadedRef = useRef(false)
+  const emailInputRef = useRef<HTMLInputElement>(null)
+  const messageInputRef = useRef<HTMLTextAreaElement>(null)
 
   const [scriptReady, setScriptReady] = useState(false)
   const [status, setStatus] = useState<FormStatus>('idle')
@@ -148,10 +148,18 @@ export default function ContactForm(): React.JSX.Element {
 
   const fieldErrors = getFieldErrors(fields)
   const visibleFieldErrors = getVisibleFieldErrors(fieldErrors, touchedFields)
-  const validationMessages = getErrorMessages(visibleFieldErrors)
 
   function clearSubmissionError(): void {
     setSubmissionError('')
+  }
+
+  function focusField(fieldName: FieldName): void {
+    if (fieldName === 'email') {
+      emailInputRef.current?.focus()
+      return
+    }
+
+    messageInputRef.current?.focus()
   }
 
   function loadRecaptcha(): void {
@@ -210,10 +218,16 @@ export default function ContactForm(): React.JSX.Element {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault()
-    setTouchedFields({ email: true, message: true })
     clearSubmissionError()
 
     if (hasFieldErrors(fieldErrors)) {
+      const firstInvalidField = getFirstInvalidFieldName(fieldErrors)
+
+      if (firstInvalidField) {
+        markFieldAsTouched(firstInvalidField)
+        focusField(firstInvalidField)
+      }
+
       return
     }
 
@@ -277,10 +291,6 @@ export default function ContactForm(): React.JSX.Element {
   return (
     <div onPointerEnter={loadRecaptcha} onFocus={loadRecaptcha}>
       <form onSubmit={handleSubmit} noValidate className="space-y-5">
-        {validationMessages.length > 0 ? (
-          <FeedbackPanel title="Almost there" messages={validationMessages} />
-        ) : null}
-
         {submissionError ? <FeedbackPanel title="Not through yet" messages={[submissionError]} /> : null}
 
         <div>
@@ -288,6 +298,7 @@ export default function ContactForm(): React.JSX.Element {
             Email
           </label>
           <input
+            ref={emailInputRef}
             id="email"
             type="email"
             required
@@ -311,6 +322,7 @@ export default function ContactForm(): React.JSX.Element {
             Message
           </label>
           <textarea
+            ref={messageInputRef}
             id="message"
             required
             rows={5}
