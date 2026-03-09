@@ -66,7 +66,7 @@ export default function Home(): React.JSX.Element {
           <nav aria-label="Social links" className="flex flex-wrap gap-x-6 gap-y-2">
             {content.social.map(({ label, url }) => (
               <a key={label} href={url} className={navLinkClass} {...externalLinkAttributes}>
-                {label} -&gt;
+                {label} &gt;
               </a>
             ))}
           </nav>
