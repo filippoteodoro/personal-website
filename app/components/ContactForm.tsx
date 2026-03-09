@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState, type FormEvent } from 'react'
+import { useRef, useState, type ChangeEvent, type FocusEvent, type FormEvent } from 'react'
 
 declare global {
   interface Window {
@@ -11,19 +11,129 @@ declare global {
   }
 }
 
-type FormStatus = 'idle' | 'loading' | 'success' | 'error'
+type FormStatus = 'idle' | 'loading' | 'success'
 
 type FormFields = {
   email: string
   message: string
 }
 
+type FieldName = keyof FormFields
+type FieldErrors = Record<FieldName, string>
+type TouchedFields = Record<FieldName, boolean>
+
+type FeedbackPanelProps = Readonly<{
+  title: string
+  messages: string[]
+}>
+
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+const EMPTY_FIELDS: FormFields = { email: '', message: '' }
+const UNTOUCHED_FIELDS: TouchedFields = { email: false, message: false }
+const SUBMISSION_ERROR_MESSAGE = 'The note did not go through. Try again in a minute.'
 const INPUT_CLASS =
-  'w-full border border-gray-200 dark:border-gray-700 rounded-md px-4 py-3 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-300 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600 dark:focus:ring-gray-400 transition'
+  'w-full rounded-md border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-600 dark:focus:ring-gray-400'
+const INPUT_ERROR_CLASS =
+  'border-rose-300 bg-rose-50/70 text-rose-950 placeholder:text-rose-300 focus:ring-rose-300 dark:border-rose-400/40 dark:bg-rose-950/30 dark:text-rose-50 dark:placeholder:text-rose-200/40 dark:focus:ring-rose-300/40'
+const LABEL_CLASS = 'mb-1.5 block text-xs transition-colors'
+const FEEDBACK_PANEL_CLASS =
+  'rounded-2xl border border-rose-200/80 bg-rose-50/75 px-4 py-3 backdrop-blur-sm dark:border-rose-400/20 dark:bg-rose-500/10'
+const FEEDBACK_TITLE_CLASS =
+  'text-[11px] font-medium uppercase tracking-[0.24em] text-rose-700 dark:text-rose-100/90'
+const FEEDBACK_MESSAGE_CLASS =
+  'rounded-full border border-rose-200/80 bg-white/70 px-3 py-1 text-xs text-rose-700 dark:border-rose-300/15 dark:bg-white/5 dark:text-rose-100'
+const INLINE_ERROR_CLASS =
+  'mt-2 inline-flex rounded-full border border-rose-200/80 bg-rose-50/80 px-2.5 py-1 text-[11px] text-rose-700 dark:border-rose-300/15 dark:bg-rose-500/10 dark:text-rose-100'
 
 function validateEmail(value: string): boolean {
   return EMAIL_REGEX.test(value)
+}
+
+function getEmailError(value: string): string {
+  const normalizedValue = value.trim()
+
+  if (!normalizedValue) {
+    return 'Need your email so I can write back.'
+  }
+
+  if (!validateEmail(normalizedValue)) {
+    return 'That email does not look valid yet.'
+  }
+
+  return ''
+}
+
+function getMessageError(value: string): string {
+  if (!value.trim()) {
+    return 'Write a message before sending.'
+  }
+
+  return ''
+}
+
+function getFieldErrors(fields: FormFields): FieldErrors {
+  return {
+    email: getEmailError(fields.email),
+    message: getMessageError(fields.message),
+  }
+}
+
+function getVisibleFieldErrors(fieldErrors: FieldErrors, touchedFields: TouchedFields): FieldErrors {
+  return {
+    email: touchedFields.email ? fieldErrors.email : '',
+    message: touchedFields.message ? fieldErrors.message : '',
+  }
+}
+
+function getErrorMessages(fieldErrors: FieldErrors): string[] {
+  const messages: string[] = []
+
+  if (fieldErrors.email) {
+    messages.push(fieldErrors.email)
+  }
+
+  if (fieldErrors.message) {
+    messages.push(fieldErrors.message)
+  }
+
+  return messages
+}
+
+function hasFieldErrors(fieldErrors: FieldErrors): boolean {
+  return Boolean(fieldErrors.email || fieldErrors.message)
+}
+
+function getInputClassName(hasError: boolean): string {
+  if (hasError) {
+    return `${INPUT_CLASS} ${INPUT_ERROR_CLASS}`
+  }
+
+  return INPUT_CLASS
+}
+
+function getLabelClassName(hasError: boolean): string {
+  if (hasError) {
+    return `${LABEL_CLASS} text-rose-700 dark:text-rose-100`
+  }
+
+  return `${LABEL_CLASS} text-gray-600 dark:text-gray-400`
+}
+
+function FeedbackPanel({ title, messages }: FeedbackPanelProps): React.JSX.Element {
+  return (
+    <div className={FEEDBACK_PANEL_CLASS} aria-live="polite">
+      <p className={FEEDBACK_TITLE_CLASS}>{title}</p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {messages.map(function renderMessage(message): React.JSX.Element {
+          return (
+            <p key={message} className={FEEDBACK_MESSAGE_CLASS}>
+              {message}
+            </p>
+          )
+        })}
+      </div>
+    </div>
+  )
 }
 
 export default function ContactForm(): React.JSX.Element {
@@ -32,51 +142,92 @@ export default function ContactForm(): React.JSX.Element {
 
   const [scriptReady, setScriptReady] = useState(false)
   const [status, setStatus] = useState<FormStatus>('idle')
-  const [fields, setFields] = useState<FormFields>({ email: '', message: '' })
-  const [emailError, setEmailError] = useState('')
+  const [fields, setFields] = useState<FormFields>(EMPTY_FIELDS)
+  const [touchedFields, setTouchedFields] = useState<TouchedFields>(UNTOUCHED_FIELDS)
+  const [submissionError, setSubmissionError] = useState('')
+
+  const fieldErrors = getFieldErrors(fields)
+  const visibleFieldErrors = getVisibleFieldErrors(fieldErrors, touchedFields)
+  const validationMessages = getErrorMessages(visibleFieldErrors)
+
+  function clearSubmissionError(): void {
+    setSubmissionError('')
+  }
 
   function loadRecaptcha(): void {
-    if (loadedRef.current) return
+    if (loadedRef.current) {
+      return
+    }
 
     loadedRef.current = true
     const script = document.createElement('script')
     script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
-    script.onload = () => setScriptReady(true)
+    script.onload = function handleRecaptchaLoad(): void {
+      setScriptReady(true)
+    }
     document.head.appendChild(script)
   }
 
-  function handleEmailChange(value: string): void {
-    setFields(current => ({ ...current, email: value }))
-    setEmailError('')
+  function updateField(fieldName: FieldName, value: string): void {
+    setFields(function updateFields(current): FormFields {
+      return {
+        ...current,
+        [fieldName]: value,
+      }
+    })
+
+    clearSubmissionError()
   }
 
-  function handleMessageChange(value: string): void {
-    setFields(current => ({ ...current, message: value }))
+  function markFieldAsTouched(fieldName: FieldName): void {
+    setTouchedFields(function updateTouchedFields(current): TouchedFields {
+      if (current[fieldName]) {
+        return current
+      }
+
+      return {
+        ...current,
+        [fieldName]: true,
+      }
+    })
   }
 
-  function handleEmailBlur(value: string): void {
-    if (value && !validateEmail(value)) {
-      setEmailError('Please enter a valid email address.')
-    }
+  function handleEmailChange(event: ChangeEvent<HTMLInputElement>): void {
+    updateField('email', event.target.value)
+  }
+
+  function handleMessageChange(event: ChangeEvent<HTMLTextAreaElement>): void {
+    updateField('message', event.target.value)
+  }
+
+  function handleEmailBlur(_event: FocusEvent<HTMLInputElement>): void {
+    markFieldAsTouched('email')
+  }
+
+  function handleMessageBlur(_event: FocusEvent<HTMLTextAreaElement>): void {
+    markFieldAsTouched('message')
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault()
+    setTouchedFields({ email: true, message: true })
+    clearSubmissionError()
 
-    if (!window.grecaptcha) {
-      setStatus('error')
+    if (hasFieldErrors(fieldErrors)) {
       return
     }
 
-    if (!validateEmail(fields.email)) {
-      setEmailError('Please enter a valid email address.')
+    if (!window.grecaptcha) {
+      setSubmissionError('The form is still waking up. Give it one more second.')
       return
     }
 
     setStatus('loading')
 
     try {
-      await new Promise<void>(resolve => window.grecaptcha.ready(resolve))
+      await new Promise<void>(function resolveWhenRecaptchaReady(resolve): void {
+        window.grecaptcha.ready(resolve)
+      })
       const token = await window.grecaptcha.execute(siteKey, { action: 'contact_form' })
 
       const verifyResponse = await fetch('/api/verify-captcha', {
@@ -86,7 +237,8 @@ export default function ContactForm(): React.JSX.Element {
       })
 
       if (!verifyResponse.ok) {
-        setStatus('error')
+        setStatus('idle')
+        setSubmissionError(SUBMISSION_ERROR_MESSAGE)
         return
       }
 
@@ -101,54 +253,81 @@ export default function ContactForm(): React.JSX.Element {
       })
 
       const submitResult = (await submitResponse.json()) as { success?: boolean }
-      setStatus(submitResult.success ? 'success' : 'error')
+      if (!submitResult.success) {
+        setStatus('idle')
+        setSubmissionError(SUBMISSION_ERROR_MESSAGE)
+        return
+      }
+
+      setStatus('success')
     } catch {
-      setStatus('error')
+      setStatus('idle')
+      setSubmissionError(SUBMISSION_ERROR_MESSAGE)
     }
   }
 
   if (status === 'success') {
-    return <p className="text-sm text-gray-500 dark:text-gray-400">Thanks - I&apos;ll get back to you soon.</p>
+    return (
+      <div className="rounded-2xl border border-gray-200/80 bg-gray-50/80 px-4 py-3 text-sm text-gray-500 backdrop-blur-sm dark:border-gray-700 dark:bg-gray-900/60 dark:text-gray-400">
+        Thanks - I&apos;ll get back to you soon.
+      </div>
+    )
   }
 
   return (
     <div onPointerEnter={loadRecaptcha} onFocus={loadRecaptcha}>
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} noValidate className="space-y-5">
+        {validationMessages.length > 0 ? (
+          <FeedbackPanel title="Almost there" messages={validationMessages} />
+        ) : null}
+
+        {submissionError ? <FeedbackPanel title="Not through yet" messages={[submissionError]} /> : null}
+
         <div>
-          <label htmlFor="email" className="block text-xs text-gray-600 dark:text-gray-400 mb-1.5">
+          <label htmlFor="email" className={getLabelClassName(Boolean(visibleFieldErrors.email))}>
             Email
           </label>
           <input
             id="email"
             type="email"
             required
+            aria-invalid={Boolean(visibleFieldErrors.email)}
+            aria-describedby={visibleFieldErrors.email ? 'contact-email-error' : undefined}
             value={fields.email}
-            onChange={event => handleEmailChange(event.target.value)}
-            onBlur={event => handleEmailBlur(event.target.value)}
-            className={INPUT_CLASS}
+            onChange={handleEmailChange}
+            onBlur={handleEmailBlur}
+            className={getInputClassName(Boolean(visibleFieldErrors.email))}
             placeholder="you@example.com"
           />
-          {emailError && <p className="text-xs text-red-500 mt-1">{emailError}</p>}
+          {visibleFieldErrors.email ? (
+            <p id="contact-email-error" className={INLINE_ERROR_CLASS}>
+              {visibleFieldErrors.email}
+            </p>
+          ) : null}
         </div>
 
         <div>
-          <label htmlFor="message" className="block text-xs text-gray-600 dark:text-gray-400 mb-1.5">
+          <label htmlFor="message" className={getLabelClassName(Boolean(visibleFieldErrors.message))}>
             Message
           </label>
           <textarea
             id="message"
             required
             rows={5}
+            aria-invalid={Boolean(visibleFieldErrors.message)}
+            aria-describedby={visibleFieldErrors.message ? 'contact-message-error' : undefined}
             value={fields.message}
-            onChange={event => handleMessageChange(event.target.value)}
-            className={`${INPUT_CLASS} resize-none`}
+            onChange={handleMessageChange}
+            onBlur={handleMessageBlur}
+            className={`${getInputClassName(Boolean(visibleFieldErrors.message))} resize-none`}
             placeholder="What's on your mind?"
           />
+          {visibleFieldErrors.message ? (
+            <p id="contact-message-error" className={INLINE_ERROR_CLASS}>
+              {visibleFieldErrors.message}
+            </p>
+          ) : null}
         </div>
-
-        {status === 'error' && (
-          <p className="text-xs text-red-500">Something went wrong - please try again later.</p>
-        )}
 
         <button
           type="submit"
