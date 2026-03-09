@@ -57,7 +57,7 @@ Currently **Courier Prime** (Google Fonts). To change:
 ## Deployment
 
 Push to `main` → Vercel auto-deploys. No manual steps needed.
-Remote: `https://github.com/filippoteodoro/personal-website`
+Remote: `https://github.com/filippoteodoro/personal`
 
 ## Commands
 
