@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Courier_Prime } from 'next/font/google'
-import { GoogleAnalytics } from '@next/third-parties/google'
-import { Analytics } from '@vercel/analytics/next'
+import DeferredAnalytics from './components/DeferredAnalytics'
 import { content } from '@/lib/content'
 import './globals.css'
 
@@ -50,8 +49,7 @@ export default function RootLayout({ children }: RootLayoutProps): React.JSX.Ele
     <html lang="en">
       <body className={courierPrime.className}>
         {children}
-        {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
-        <Analytics />
+        <DeferredAnalytics gaId={gaId} />
       </body>
     </html>
   )

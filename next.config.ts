@@ -8,6 +8,9 @@ const securityHeaders = [
 ]
 
 const nextConfig: NextConfig = {
+  experimental: {
+    inlineCss: true,
+  },
   async rewrites() {
     return [{ source: '/favicon.ico', destination: '/icon' }]
   },

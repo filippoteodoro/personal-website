@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import ContactForm from './components/ContactForm'
+import DeferredContactForm from './components/DeferredContactForm'
 import { content, type BioSegment } from '@/lib/content'
 
 const linkClass = 'underline underline-offset-2'
@@ -97,7 +97,7 @@ export default function Home(): React.JSX.Element {
           <h2 id="contact-heading" className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
             Drop a message
           </h2>
-          <ContactForm />
+          <DeferredContactForm />
         </section>
 
         <footer className="mt-20 text-xs text-gray-500 dark:text-gray-500">&copy; {new Date().getFullYear()} Filippo Teodoro</footer>
