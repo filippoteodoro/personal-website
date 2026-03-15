@@ -50,9 +50,9 @@ Automatic via Tailwind `dark:` variants + `prefers-color-scheme`. No toggle. The
 
 ## Font
 
-Currently **Courier Prime** (Google Fonts). To change:
+Currently **SF Mono Regular** (local OTF, loaded via `next/font/local`). Font files live in `app/fonts/`. To change:
 1. Update import and variable in `app/layout.tsx`
-2. Update `fontFamily` in `app/icon.tsx`
+2. Update `loadFontData` path and `fontFamily` in `app/icon.tsx`
 
 ## Deployment
 

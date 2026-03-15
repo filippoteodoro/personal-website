@@ -1,10 +1,16 @@
 import type { Metadata, Viewport } from 'next'
-import { Courier_Prime } from 'next/font/google'
+import localFont from 'next/font/local'
 import DeferredAnalytics from './components/DeferredAnalytics'
 import { content } from '@/lib/content'
 import './globals.css'
 
-const courierPrime = Courier_Prime({ subsets: ['latin'], weight: ['400', '700'], display: 'optional' })
+const sfMono = localFont({
+  src: [
+    { path: './fonts/SF-Mono-Regular.otf', weight: '400', style: 'normal' },
+    { path: './fonts/SF-Mono-Bold.otf', weight: '700', style: 'normal' },
+  ],
+  display: 'optional',
+})
 type RootLayoutProps = Readonly<{ children: React.ReactNode }>
 
 function getGoogleAnalyticsId(): string | undefined {
@@ -47,7 +53,7 @@ export default function RootLayout({ children }: RootLayoutProps): React.JSX.Ele
 
   return (
     <html lang="en">
-      <body className={courierPrime.className}>
+      <body className={sfMono.className}>
         {children}
         <DeferredAnalytics gaId={gaId} />
       </body>

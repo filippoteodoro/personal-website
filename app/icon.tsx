@@ -1,14 +1,15 @@
 import { ImageResponse } from 'next/og'
+import { readFile } from 'node:fs/promises'
+import path from 'node:path'
 
 export const size = { width: 32, height: 32 }
 export const contentType = 'image/png'
 
-const FONT_URL = 'https://raw.githubusercontent.com/google/fonts/main/ofl/courierprime/CourierPrime-Bold.ttf'
-
 async function loadFontData(): Promise<ArrayBuffer | null> {
   try {
-    const response = await fetch(FONT_URL)
-    return await response.arrayBuffer()
+    const fontPath = path.join(process.cwd(), 'app/fonts/SF-Mono-Bold.otf')
+    const buffer = await readFile(fontPath)
+    return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength) as ArrayBuffer
   } catch {
     return null
   }
@@ -28,7 +29,7 @@ export default async function Icon(): Promise<ImageResponse> {
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: 17,
-        fontFamily: fontData ? 'Courier Prime' : '"Courier New", Courier, monospace',
+        fontFamily: fontData ? 'SF Mono' : '"Courier New", Courier, monospace',
         fontWeight: 700,
       }}
     >
@@ -37,7 +38,7 @@ export default async function Icon(): Promise<ImageResponse> {
     {
       ...size,
       fonts: fontData
-        ? [{ name: 'Courier Prime', data: fontData, style: 'normal' as const, weight: 700 as const }]
+        ? [{ name: 'SF Mono', data: fontData, style: 'normal' as const, weight: 700 as const }]
         : [],
     }
   )
