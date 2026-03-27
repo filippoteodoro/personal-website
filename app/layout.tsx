@@ -9,8 +9,8 @@ const sfMono = localFont({
     { path: './fonts/SF-Mono-Regular.otf', weight: '400', style: 'normal' },
     { path: './fonts/SF-Mono-Bold.otf', weight: '700', style: 'normal' },
   ],
-  display: 'swap',
-  fallback: ['Courier New', 'Courier', 'monospace'],
+  display: 'block',
+  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'monospace'],
 })
 type RootLayoutProps = Readonly<{ children: React.ReactNode }>
 
